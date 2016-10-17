@@ -1,0 +1,5 @@
+name: Entity Reference Override
+type: module
+description: Entity reference with overridable title
+core: 8.x
+package: Custom
