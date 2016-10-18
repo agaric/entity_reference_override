@@ -20,17 +20,23 @@ class EntityReferenceOverrideAutocomplete extends EntityReferenceAutocompleteWid
 
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $widget = array(
-      '#attributes' => ['class' => ['form--inline']],
+      '#attributes' => ['class' => ['form--inline', 'clearfix']],
       '#theme_wrappers' => ['container'],
     );
     $widget['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
     $widget['override'] = array(
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
-      '#placeholder' => $this->fieldDefinition->getSetting('override_label'),
       '#size' => 40,
       '#weight' => 10,
     );
+
+    if ($this->fieldDefinition->getFieldStorageDefinition()->isMultiple()) {
+      $widget['override']['#placeholder'] = $this->fieldDefinition->getSetting('override_label');
+    }
+    else {
+      $widget['override']['#title'] = $this->fieldDefinition->getSetting('override_label');
+    }
 
     return $widget;
   }

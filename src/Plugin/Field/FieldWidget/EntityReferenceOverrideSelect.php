@@ -33,7 +33,7 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
     );
 
     $widget = array(
-      '#attributes' => ['class' => ['form--inline']],
+      '#attributes' => ['class' => ['form--inline', 'clearfix']],
       '#theme_wrappers' => ['container'],
     );
 
@@ -41,10 +41,16 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
     $widget['override'] = array(
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
-      '#placeholder' => $this->fieldDefinition->getSetting('override_label'),
       '#size' => 40,
       '#weight' => 10,
     );
+
+    if ($this->fieldDefinition->getFieldStorageDefinition()->isMultiple()) {
+      $widget['override']['#placeholder'] = $this->fieldDefinition->getSetting('override_label');
+    }
+    else {
+      $widget['override']['#title'] = $this->fieldDefinition->getSetting('override_label');
+    }
 
     return $widget;
   }

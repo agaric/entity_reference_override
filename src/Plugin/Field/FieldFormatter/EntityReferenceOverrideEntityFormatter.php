@@ -4,13 +4,14 @@ namespace Drupal\entity_reference_override\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'entity_reference_override_entity' formatter.
  *
  * @FieldFormatter(
  *   id = "entity_reference_override_entity",
- *   label = @Translation("Rendered entity w/title override"),
+ *   label = @Translation("Rendered entity"),
  *   description = @Translation("Display the referenced entities rendered by entity_view(), with optional title override."),
  *   field_types = {
  *     "entity_reference_override"
@@ -18,6 +19,57 @@ use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter
  * )
  */
 class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormatter {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return array(
+      'override_action' => 'title',
+    ) + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+    $elements['override_action'] = array(
+      '#type' => 'select',
+      '#options' => [
+        'title' => t('Entity title'),
+        'class' => t('Link class'),
+      ],
+      '#title' => t('Use custom text to override'),
+      '#default_value' => $this->getSetting('override_action'),
+      '#required' => TRUE,
+    );
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    switch ($this->getSetting('override_action')) {
+      case 'title':
+        $override = t('title');
+        break;
+      case 'class':
+        $override = t('CSS class');
+        break;
+      case 'display':
+        $override = t('display mode');
+        break;
+    }
+    $summary[] = t('Per-entity @override override', array('@override' => $override));
+
+    return $summary;
+  }
+
 
   /**
    * {@inheritdoc}
@@ -55,13 +107,26 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
         return $elements;
       }
 
-      // This is pretty brute-force, and I'm not happy with it, but we'll see if it works.
       if (!empty($items[$delta]->override)) {
-        $entity->title = $items[$delta]->override;
+        switch ($this->getSetting('override_action')) {
+          case 'title':
+            $entity->title = $items[$delta]->override;
+            break;
+          case 'class':
+            $override_class = $items[$delta]->override;
+            break;
+          case 'display':
+            $view_mode = $items[$delta]->override;
+            break;
+        }
       }
 
       $view_builder = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
       $elements[$delta] = $view_builder->view($entity, $view_mode, $entity->language()->getId());
+
+      if (!empty($override_class)) {
+        $elements[$delta]['class'][] = $override_class;
+      }
 
       // Add a resource attribute to set the mapping property's value to the
       // entity's url. Since we don't know what the markup of the entity will
@@ -73,4 +138,6 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
 
     return $elements;
   }
+
+
 }
