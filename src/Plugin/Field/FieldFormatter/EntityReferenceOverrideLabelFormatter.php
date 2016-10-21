@@ -35,12 +35,13 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
     $elements['override_action'] = array(
-      '#type' => 'select',
+      '#type' => 'radios',
       '#options' => [
-        'title' => t('Entity title'),
-        'class' => t('Link class'),
+        'suffix' => t('Add after title'),
+        'title' => t('Replace the title'),
+        'class' => t('Add link class'),
       ],
-      '#title' => t('Use custom text to override'),
+      '#title' => t('Use custom text to'),
       '#default_value' => $this->getSetting('override_action'),
       '#required' => TRUE,
     );
@@ -56,13 +57,16 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
 
     switch ($this->getSetting('override_action')) {
       case 'title':
-        $override = t('title');
+        $override = t('title override');
         break;
       case 'class':
-        $override = t('CSS class');
+        $override = t('custom CSS class');
+        break;
+      case 'suffix':
+        $override = t('note after title');
         break;
     }
-    $summary[] = t('Per-entity @override override', array('@override' => $override));
+    $summary[] = t('Per-entity @override', array('@override' => $override));
 
     return $summary;
   }
@@ -79,6 +83,9 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
             break;
           case 'class':
             $elements[$delta]['#attributes']['class'][] = $values[$delta]['override'];
+            break;
+          case 'suffix':
+            $elements[$delta]['#suffix'] .= ' (' . $values[$delta]['override'] . ')';
             break;
         }
       }
