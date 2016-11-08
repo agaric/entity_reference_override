@@ -79,7 +79,7 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       if (!empty($values[$delta]['override'])) {
         switch ($this->getSetting('override_action')) {
           case 'title':
-            $elements[$delta]['#label'] = $values[$delta]['override'];
+            $elements[$delta]['#title'] = $values[$delta]['override'];
             break;
           case 'class':
             $elements[$delta]['#attributes']['class'][] = $values[$delta]['override'];
