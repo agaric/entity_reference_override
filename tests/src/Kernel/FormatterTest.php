@@ -120,4 +120,54 @@ class FormatterTest extends KernelTestBase {
     $this->assertContains('referenced entity', $output);
   }
 
+  /**
+   * Renders the same entity referenced from many different places.
+   */
+  public function testEntityReferenceRecursiveProtectionWithManyRenderedEntities() {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $referenced_entity */
+    $referenced_entity = EntityTest::create([
+      'name' => 'referenced entity',
+    ]);
+    $referenced_entity->save();
+
+    $range = range(0, 30);
+    $referencing_entities = array_map(function () use ($referenced_entity) {
+      $referencing_entity = EntityTest::create([
+        'name' => $this->randomMachineName(),
+        'test_ero' => [
+          [
+            'target_id' => $referenced_entity->id(),
+            'override' => 'test override',
+          ],
+        ]
+      ]);
+      $referencing_entity->save();
+      return $referencing_entity;
+    }, $range);
+
+    // Set the default view mode to use the 'entity_reference_entity_view'
+    // formatter.
+    entity_get_display('entity_test', 'entity_test', 'default')
+      ->setComponent('test_ero', [
+        'type' => 'entity_reference_override_entity',
+        'settings' => [
+          'override_action' => 'title',
+        ],
+      ])
+      ->save();
+
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('entity_test');
+    $build = $view_builder->viewMultiple($referencing_entities, 'default');
+    $output = $this->render($build);
+
+    // The title of entity_test entities is printed twice by default, so we have
+    // to multiply the formatter's recursive rendering protection limit by 2.
+    // Additionally, we have to take into account 2 additional occurrences of
+    // the entity title because we're rendering the full entity, not just the
+    // reference field.
+    $expected_occurrences = 30 * 2 + 2;
+    $actual_occurrences = substr_count($output, $referenced_entity->get('name')->value);
+    $this->assertEquals($expected_occurrences, $actual_occurrences);
+  }
+
 }
