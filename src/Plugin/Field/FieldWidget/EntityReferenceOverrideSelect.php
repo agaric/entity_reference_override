@@ -41,6 +41,7 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
     $widget['override'] = array(
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
+      '#maxlength' => 255,
       '#size' => 40,
       '#weight' => 10,
     );
