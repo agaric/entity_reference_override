@@ -37,8 +37,9 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
     $elements['override_action'] = array(
       '#type' => 'radios',
       '#options' => [
-        'suffix' => t('Add after title'),
         'title' => t('Replace the title'),
+        'title-append' => t('Append to the title'),
+        'suffix' => t('Add after title'),
         'class' => t('Add link class'),
       ],
       '#title' => t('Use custom text to'),
@@ -79,12 +80,18 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       if (!empty($values[$delta]['override'])) {
         switch ($this->getSetting('override_action')) {
           case 'title':
-            $elements[$delta]['#title'] = $values[$delta]['override'];
+            $elements[$delta]['#title'] = ' (' . $values[$delta]['override'] . ')';
+            break;
+          case 'title-append':
+            $elements[$delta]['#title'] .= $values[$delta]['override'];
             break;
           case 'class':
             $elements[$delta]['#attributes']['class'][] = $values[$delta]['override'];
             break;
           case 'suffix':
+            if (!isset($elements[$delta]['#suffix'])) {
+              $elements[$delta]['#suffix'] = '';
+            }
             $elements[$delta]['#suffix'] .= ' (' . $values[$delta]['override'] . ')';
             break;
         }
