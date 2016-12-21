@@ -60,6 +60,9 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       case 'title':
         $override = t('title override');
         break;
+      case 'title':
+        $override = t('title addition');
+        break;
       case 'class':
         $override = t('custom CSS class');
         break;
