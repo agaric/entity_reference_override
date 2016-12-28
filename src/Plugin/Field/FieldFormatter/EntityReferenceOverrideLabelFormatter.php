@@ -60,7 +60,7 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       case 'title':
         $override = t('title override');
         break;
-      case 'title':
+      case 'title-append':
         $override = t('title addition');
         break;
       case 'class':
@@ -69,6 +69,7 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       case 'suffix':
         $override = t('note after title');
         break;
+        
     }
     $summary[] = t('Per-entity @override', array('@override' => $override));
 
@@ -83,10 +84,10 @@ class EntityReferenceOverrideLabelFormatter extends EntityReferenceLabelFormatte
       if (!empty($values[$delta]['override'])) {
         switch ($this->getSetting('override_action')) {
           case 'title':
-            $elements[$delta]['#title'] = ' (' . $values[$delta]['override'] . ')';
+            $elements[$delta]['#title'] = $values[$delta]['override'];
             break;
           case 'title-append':
-            $elements[$delta]['#title'] .= $values[$delta]['override'];
+            $elements[$delta]['#title'] .= ' (' . $values[$delta]['override'] . ')';
             break;
           case 'class':
             $elements[$delta]['#attributes']['class'][] = $values[$delta]['override'];
