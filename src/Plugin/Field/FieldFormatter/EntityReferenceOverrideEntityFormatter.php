@@ -130,6 +130,10 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
       $view_builder = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
       $elements[$delta] = $view_builder->view($clone, $view_mode, $entity->language()->getId());
 
+      if (!empty($items[$delta]->override)) {
+        $elements[$delta]['#cache']['keys'][] = md5($items[$delta]->override);
+      }
+
       if (!empty($override_class)) {
         $elements[$delta]['class'][] = $override_class;
       }
