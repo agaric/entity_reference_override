@@ -8,7 +8,7 @@ cd hackysync
 ./update_drupal_org_from_gitlab.sh
 ```
 
-And henceforth:
+And thereafter:
 
 ```
 ./update_drupal_org_from_gitlab.sh
