@@ -1,0 +1,13 @@
+drutopia
+drutopia_blog
+drutopia_user
+drutopia_site
+drutopia_people
+drutopia_page
+drutopia_group
+drutopia_event
+drutopia_core
+drutopia_comment
+drutopia_campaign
+drutopia_article
+drutopia_action
