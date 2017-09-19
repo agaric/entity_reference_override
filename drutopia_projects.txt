@@ -7,6 +7,7 @@ drutopia_comment
 drutopia_core
 drutopia_event
 drutopia_group
+drutopia_landing_page
 drutopia_page
 drutopia_people
 drutopia_search
