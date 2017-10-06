@@ -15,10 +15,11 @@ do
   cd ..
 done < drutopia_projects.txt
 
-cd drutopia-infrastructure
+mkdir drutopia-infrastructure
 
 while read project
 do
+  cd drutopia-infrastructure
   git clone git@gitlab.com:drutopia/$project.git
   cd $project
   git remote add drupal $user@git.drupal.org:project/$project.git
