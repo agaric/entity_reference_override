@@ -18,3 +18,12 @@ New projects can be added to `drutopia_projects.txt` (the
 `get_all_repositories.sh` script is not
 smart enough to only try to add new projects, but if you ignore the
 errors it should work).
+
+## Tagging
+
+To push a tag to GitLab, Github, and drupal.org use the script
+`tag_project_release.sh`. Sample command:
+
+```
+./tag_project_release.sh drutopia_article 1.0-alpha1
+```
