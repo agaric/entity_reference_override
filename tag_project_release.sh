@@ -6,7 +6,7 @@ if [ 2 -ne $# ]; then
     exit 2
 fi
 project=$1
-release=$1
+release=$2
 
 echo "Tagging $project."
 cd $project;
