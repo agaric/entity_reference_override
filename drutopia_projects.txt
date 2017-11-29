@@ -10,6 +10,7 @@ drutopia_group
 drutopia_landing_page
 drutopia_page
 drutopia_people
+drutopia_resource
 drutopia_search
 drutopia_seo
 drutopia_site
