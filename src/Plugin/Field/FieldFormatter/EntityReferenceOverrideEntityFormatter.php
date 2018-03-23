@@ -130,8 +130,9 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
 
       $clone = clone $entity;
 
-      if (!empty($items[$delta]->override)) {
-        switch ($this->getSetting('override_action')) {
+      if (strlen($items[$delta]->override)) {
+        $override = $this->getSetting('override_action');
+        switch ($override) {
           case 'class':
             $override_class = $items[$delta]->override;
             break;
@@ -139,7 +140,7 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
             $view_mode = $items[$delta]->override;
             break;
           default:
-            $clone->set($this->getSetting('override_action'), $items[$delta]->override);
+            $clone->set($override, $items[$delta]->override);
             break;
         }
       }
