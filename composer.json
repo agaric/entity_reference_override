@@ -1,0 +1,16 @@
+{
+  "name": "drupal/entity_reference_override",
+  "description": "Display referenced entities with optional field overrides.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/entity_reference_override",
+  "authors": [
+    {
+      "name": "See contributors",
+      "homepage": "https://www.drupal.org/node/2809033/committers"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/entity_reference_override"
+  },
+  "license": "GPL-2.0+"
+}
