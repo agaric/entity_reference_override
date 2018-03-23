@@ -24,9 +24,9 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'override_action' => 'title',
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -37,7 +37,7 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
     $target_bundle = array_pop($this->getFieldSetting('handler_settings')['target_bundles']);
 
     $bundle_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldDefinitions($target_entity_type, $target_bundle));
-    // $text_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('text')[$target_entity_type]);
+    // To consider: Doing the same for 'text' fields.
     $string_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('string')[$target_entity_type]);
     $overridable_fields = array_intersect($string_fields, $bundle_fields);
 
@@ -47,7 +47,7 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
     }
 
     $elements = parent::settingsForm($form, $form_state);
-    $elements['override_action'] = array(
+    $elements['override_action'] = [
       '#type' => 'select',
       '#options' => [
         'title' => t('Entity title'),
@@ -56,7 +56,7 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
       '#title' => t('Use custom text to override'),
       '#default_value' => $this->getSetting('override_action'),
       '#required' => TRUE,
-    );
+    ];
 
     return $elements;
   }
@@ -72,28 +72,30 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
       case 'title':
         $override = t('title');
         break;
+
       case 'class':
         $override = t('CSS class');
         break;
+
       case 'display':
         $override = t('display mode');
         break;
+
       default:
         $override = t('@override field', ['@override' => $this::friendlyField($override_action)]);
         break;
     }
-    $summary[] = t('Per-entity @override override', array('@override' => $override));
+    $summary[] = t('Per-entity @override override', ['@override' => $override]);
 
     return $summary;
   }
-
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $view_mode = $this->getSetting('view_mode');
-    $elements = array();
+    $elements = [];
 
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
       // Due to render caching and delayed calls, the viewElements() method
@@ -136,9 +138,11 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
           case 'class':
             $override_class = $items[$delta]->override;
             break;
+
           case 'display':
             $view_mode = $items[$delta]->override;
             break;
+
           default:
             $clone->set($override, $items[$delta]->override);
             break;
@@ -160,13 +164,16 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
       // entity's url. Since we don't know what the markup of the entity will
       // be, we shouldn't rely on it for structured data such as RDFa.
       if (!empty($items[$delta]->_attributes) && !$entity->isNew() && $entity->hasLinkTemplate('canonical')) {
-        $items[$delta]->_attributes += array('resource' => $entity->toUrl()->toString());
+        $items[$delta]->_attributes += ['resource' => $entity->toUrl()->toString()];
       }
     }
 
     return $elements;
   }
 
+  /**
+   * Provide a human-readable version of a field machine name.
+   */
   public static function friendlyField($string) {
     return str_replace(['field_', '_'], ['', ' '], $string);
   }
