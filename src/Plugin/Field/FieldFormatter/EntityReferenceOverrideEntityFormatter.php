@@ -115,6 +115,8 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
 
       if (!empty($items[$delta]->override)) {
         switch ($this->getSetting('override_action')) {
+          case TRUE:
+            $clone->set('field_job_title', $items[$delta]->override);
           case 'title':
             $clone->title = $items[$delta]->override;
             break;
