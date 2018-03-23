@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @FieldFormatter(
  *   id = "entity_reference_override_entity",
  *   label = @Translation("Rendered entity"),
- *   description = @Translation("Display the referenced entities rendered by entity_view(), with optional title override."),
+ *   description = @Translation("Display the referenced entities rendered by entity_view(), with optional field overrides."),
  *   field_types = {
  *     "entity_reference_override"
  *   }
@@ -33,13 +33,26 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
+    $target_entity_type = $this->getFieldSetting('target_type');
+    $target_bundle = array_pop($this->getFieldSetting('handler_settings')['target_bundles']);
+
+    $bundle_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldDefinitions($target_entity_type, $target_bundle));
+    // $text_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('text')[$target_entity_type]);
+    $string_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('string')[$target_entity_type]);
+    $overridable_fields = array_intersect($string_fields, $bundle_fields);
+
+    $field_options = [];
+    foreach ($overridable_fields as $overridable_field) {
+      $field_options[$overridable_field] = $this::friendlyField($overridable_field);
+    }
+
     $elements = parent::settingsForm($form, $form_state);
     $elements['override_action'] = array(
       '#type' => 'select',
       '#options' => [
         'title' => t('Entity title'),
         'class' => t('Link class'),
-      ],
+      ] + $field_options,
       '#title' => t('Use custom text to override'),
       '#default_value' => $this->getSetting('override_action'),
       '#required' => TRUE,
@@ -54,7 +67,8 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
   public function settingsSummary() {
     $summary = parent::settingsSummary();
 
-    switch ($this->getSetting('override_action')) {
+    $override_action = $this->getSetting('override_action');
+    switch ($override_action) {
       case 'title':
         $override = t('title');
         break;
@@ -63,6 +77,9 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
         break;
       case 'display':
         $override = t('display mode');
+        break;
+      default:
+        $override = t('@override field', ['@override' => $this::friendlyField($override_action)]);
         break;
     }
     $summary[] = t('Per-entity @override override', array('@override' => $override));
@@ -115,16 +132,14 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
 
       if (!empty($items[$delta]->override)) {
         switch ($this->getSetting('override_action')) {
-          case TRUE:
-            $clone->set('field_job_title', $items[$delta]->override);
-          case 'title':
-            $clone->title = $items[$delta]->override;
-            break;
           case 'class':
             $override_class = $items[$delta]->override;
             break;
           case 'display':
             $view_mode = $items[$delta]->override;
+            break;
+          default:
+            $clone->set($this->getSetting('override_action'), $items[$delta]->override);
             break;
         }
       }
@@ -151,5 +166,8 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
     return $elements;
   }
 
+  public static function friendlyField($string) {
+    return str_replace(['field_', '_'], ['', ' '], $string);
+  }
 
 }
