@@ -16,5 +16,6 @@ drutopia_search
 drutopia_seo
 drutopia_site
 drutopia_social
+drutopia_storyline
 drutopia_user
 octavia
