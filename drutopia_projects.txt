@@ -11,6 +11,7 @@ drutopia_group
 drutopia_landing_page
 drutopia_page
 drutopia_people
+drutopia_related_content
 drutopia_resource
 drutopia_search
 drutopia_seo
