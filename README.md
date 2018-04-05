@@ -5,7 +5,7 @@ projects Drupal.org mirrors up-to-date:
 git clone git@gitlab.com:drutopia/hackysync.git
 cd hackysync
 ./get_all_repositories.sh <drupal.org user name>
-./update_drupal_org_from_gitlab.sh
+./update_drupal_org_github_from_gitlab.sh
 ```
 
 And thereafter:
