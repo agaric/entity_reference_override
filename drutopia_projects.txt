@@ -6,6 +6,7 @@ drutopia_campaign
 drutopia_comment
 drutopia_core
 drutopia_custom
+drutopia_dev
 drutopia_event
 drutopia_fundraising
 drutopia_group
