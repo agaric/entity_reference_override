@@ -21,6 +21,8 @@ do
   cd ../..
 done < drutopia_infrastructure_projects.txt
 
+mkdir findit
+
 while read project
 do
   cd findit
