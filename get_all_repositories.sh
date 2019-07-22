@@ -20,3 +20,13 @@ do
   git remote add github git@github.com:drutopia/$project.git
   cd ../..
 done < drutopia_infrastructure_projects.txt
+
+while read project
+do
+  cd findit
+  git clone git@gitlab.com:find-it-program-locator/$project.git
+  cd $project
+  git remote add drupal git@git.drupal.org:project/$project.git
+  # git remote add github git@github.com:drutopia/$project.git
+  cd ../..
+done < findit_projects.txt
