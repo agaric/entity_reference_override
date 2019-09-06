@@ -2,6 +2,7 @@ drutopia
 drutopia_action
 drutopia_article
 drutopia_blog
+drutopia_collection
 drutopia_campaign
 drutopia_comment
 drutopia_core
