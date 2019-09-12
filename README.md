@@ -11,6 +11,7 @@ cd hackysync
 And thereafter:
 
 ```
+git pull
 ./update_drupal_org_github_from_gitlab.sh
 ```
 
