@@ -22,3 +22,14 @@ function entity_reference_override_help($route_name, RouteMatchInterface $route_
     default:
   }
 }
+
+/**
+ * Implements hook_entity_usage_track_info().
+ */
+function entity_reference_override_entity_usage_track_info_alter(&$info) {
+  // Track usage of entities related in entity_reference_override fields.
+  // @see https://www.drupal.org/project/entity_usage
+  if (!empty($info['entity_reference']['field_types'])) {
+    $info['entity_reference']['field_types'][] = 'entity_reference_override';
+  }
+}
