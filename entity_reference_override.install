@@ -9,7 +9,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\FieldStorageConfigInterface;
 
 /**
- * Converts the override columsn to longtext.
+ * Converts the override column to longtext.
  */
 function entity_reference_override_update_8001() {
   $schema = \Drupal::database()->schema();
