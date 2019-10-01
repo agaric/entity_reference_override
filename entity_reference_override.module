@@ -25,6 +25,9 @@ function entity_reference_override_help($route_name, RouteMatchInterface $route_
       $output .= '<li>' . t('Any text field (experimental)') . '</li>';
       $output .= '</ul>';
       $output .= '<p>' . t('Note that only one of these is overridable at a time, as this module provides only one text field.') . '</p>';
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>' . t('Go to the <em>Manage fields</em> tab of any fieldable entity, for example <em>Administration » Structure » Content types » Article » Manage fields</em> for the article content type.  Press <strong>Add field</strong>, and using the <strong>Add a new field</strong> dropdown, scrolling to under <strong>Reference</strong>, select "Entity reference w/custom text", provide a label for your entity referencing field, and then press <strong>Save and continue</strong>.') . '</p>';
+      $output .= '<p>' . t('On the resulting page, select what type of item to reference and allowed number of values as you would for any entity reference field, and <strong>Save field settings</strong>.') . '</p>';
       $output .= '<h3>' . t('Project page and issues') . '</h3>';
       $output .= '<p>' . t('Please <a href="https://www.drupal.org/project/entity_reference_override">visit the project page</a> for more information and <a href="https://www.drupal.org/project/issues/entity_reference_override?categories=All">review the open issues</a> if you have a problem or feature request.') . '</p>';
       return $output;
