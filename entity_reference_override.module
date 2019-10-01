@@ -16,7 +16,17 @@ function entity_reference_override_help($route_name, RouteMatchInterface $route_
     case 'help.page.entity_reference_override':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Entity reference with overridable title') . '</p>';
+      $output .= '<p>' . t('The Entity Reference Override module provides an entity reference field paired with an accompanying text field which can be used to replace, on the referencing entities representation of the referenced entity, certain aspects of the referenced entity.') . '</p>';
+      $output .= '<p>' . t('Any one of these elements on the referenced entity can be overridden by the referencing entity:') . '</p>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Title') . '</li>';
+      $output .= '<li>' . t('Classes added to rendered entities') . '</li>';
+      $output .= '<li>' . t('Display mode for the rendered entity') . '</li>';
+      $output .= '<li>' . t('Any text field (experimental)') . '</li>';
+      $output .= '</ul>';
+      $output .= '<p>' . t('Note that only one of these is overridable at a time, as this module provides only one text field.') . '</p>';
+      $output .= '<h3>' . t('Project page and issues') . '</h3>';
+      $output .= '<p>' . t('Please <a href="https://www.drupal.org/project/entity_reference_override">visit the project page</a> for more information and <a href="https://www.drupal.org/project/issues/entity_reference_override?categories=All">review the open issues</a> if you have a problem or feature request.') . '</p>';
       return $output;
 
     default:
