@@ -136,7 +136,9 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
         $override = $this->getSetting('override_action');
         switch ($override) {
           case 'title':
-            $clone->title = $items[$delta]->override;
+            $title_key = $clone->getEntityType()->getKey('label');
+            $title_key = $title_key ?: 'title';
+            $clone->$title_key = $items[$delta]->override;
             break;
 
           case 'class':
