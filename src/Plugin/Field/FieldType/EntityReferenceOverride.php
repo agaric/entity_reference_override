@@ -40,7 +40,7 @@ class EntityReferenceOverride extends EntityReferenceItem {
     $schema = parent::schema($field_definition);
     $schema['columns']['override'] = array(
       'type' => 'varchar',
-      'length' => 4096,
+      'length' => 4095,
       'not null' => FALSE,
     );
     return $schema;
