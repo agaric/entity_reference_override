@@ -37,9 +37,15 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
     $target_bundle = array_pop($this->getFieldSetting('handler_settings')['target_bundles']);
 
     $bundle_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldDefinitions($target_entity_type, $target_bundle));
-    // To consider: Doing the same for 'text' fields.
-    $string_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('string')[$target_entity_type]);
-    $overridable_fields = array_intersect($string_fields, $bundle_fields);
+
+    // Gather all the kinds of fields we think we can override.  Note that
+    // array_merge() with NULL returns NULL, so we must be sure to use an array
+    // if we get no results, or it will cancel out the others.
+    $string_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('string')[$target_entity_type]) ?: [];
+    $text_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('text_long')[$target_entity_type]) ?: [];
+    $email_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldMapByFieldType('email')[$target_entity_type]) ?: [];
+
+    $overridable_fields = array_intersect(array_merge($string_fields, $text_fields, $email_fields), $bundle_fields);
 
     $field_options = [];
     foreach ($overridable_fields as $overridable_field) {
