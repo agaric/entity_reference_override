@@ -12,17 +12,55 @@ use Drupal\field\FieldStorageConfigInterface;
  * Converts the override column to longtext.
  */
 function entity_reference_override_update_8001() {
+  $new_schema = [
+    'type' => 'text',
+    'size' => 'big',
+    'not null' => FALSE,
+  ];
+  entity_reference_override_schema_update_helper($new_schema);
+}
+
+/**
+ * Converts the override column to longer text.
+ */
+function entity_reference_override_update_8002() {
+  $new_schema = [
+    'type' => 'varchar',
+    'length' => 4094,
+    'not null' => FALSE,
+  ];
+  entity_reference_override_schema_update_helper($new_schema);
+}
+
+/**
+ * Converts the override column to longer text.
+ */
+function entity_reference_override_update_8003() {
+  $new_schema = [
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => FALSE,
+  ];
+  entity_reference_override_schema_update_helper($new_schema, 'override_format');
+}
+
+/**
+ * Helper function to adjust reference field columns data schema.
+ *
+ * Individual sites can take it to adjust for their specific needs.
+ */
+function entity_reference_override_schema_update_helper(array $new_schema, $property_name = 'override') {
   $schema = \Drupal::database()->schema();
 
   // Load all field configurations ... note: We don't fix base fields, because
-  // probably noone is using entity_reference_override fields with it.
+  // probably no-one is using entity_reference_override fields with them.
   $field_storage_configs = FieldStorageConfig::loadMultiple();
   $filtered_storage_configs = array_filter($field_storage_configs, function (FieldStorageConfigInterface $config) {
     return $config->getType() === 'entity_reference_override';
   });
 
   $entity_type_manager = \Drupal::entityTypeManager();
-  array_walk($filtered_storage_configs, function (FieldStorageConfigInterface $config) use ($schema, $entity_type_manager) {
+  array_walk($filtered_storage_configs, function (FieldStorageConfigInterface $config) use ($schema, $entity_type_manager, $property_name, $new_schema) {
     $entity_type_id = $config->getTargetEntityTypeId();
     $storage = $entity_type_manager->getStorage($entity_type_id);
     if ($storage instanceof SqlEntityStorageInterface) {
@@ -31,15 +69,16 @@ function entity_reference_override_update_8001() {
 
       $table_name = $table_mapping->getDedicatedDataTableName($config);
       $revision_table_name = $table_mapping->getDedicatedRevisionTableName($config);
-      $column_name = $table_mapping->getFieldColumnName($config, 'override');
+      $column_name = $table_mapping->getFieldColumnName($config, $property_name);
 
-      $new_schema = [
-        'type' => 'text',
-        'size' => 'big',
-        'not null' => FALSE,
-      ];
-      $schema->changeField($table_name, $column_name, $column_name, $new_schema);
-      $schema->changeField($revision_table_name, $column_name, $column_name, $new_schema);
+      if ($schema->fieldExists($table_name, $column_name)) {
+        $schema->changeField($table_name, $column_name, $column_name, $new_schema);
+        $schema->changeField($revision_table_name, $column_name, $column_name, $new_schema);
+      }
+      else {
+        $schema->addField($table_name, $column_name, $new_schema);
+        $schema->addField($revision_table_name, $column_name, $new_schema);
+      }
 
       // Now we have to change the entity system schema record. This is used to
       // make it possible later to determine schema changes.
