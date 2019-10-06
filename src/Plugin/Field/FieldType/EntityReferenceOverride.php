@@ -62,6 +62,7 @@ class EntityReferenceOverride extends EntityReferenceItem {
   public static function defaultFieldSettings() {
     return array(
       'override_label' => t('Custom text'),
+      'override_format' => NULL,
     ) + parent::defaultFieldSettings();
   }
 
@@ -76,6 +77,26 @@ class EntityReferenceOverride extends EntityReferenceItem {
       '#title' => t('Custom text label'),
       '#default_value' => $this->getSetting('override_label'),
       '#description' => t('Also used as a placeholder in multi-value instances.')
+    ];
+
+    // Collect and add to text formats administrators can choose for people
+    // entering custom text with which to override a field or label.
+    $override_formats = [];
+    $override_formats[NULL] = t('Single line, no markup');
+    $formats = filter_formats();
+    foreach ($formats as $name => $format) {
+      $override_formats[$name] = $format->label();
+    }
+    // We should probably move the choice of what to override to here instead of
+    // the widget, as it doesn't make sense to allow a class to be set to a
+    // multiline, HTML-capable text format.
+
+    $elements['override_format'] = [
+      '#type' => 'select',
+      '#title' => t('Custom text format'),
+      '#options' => $override_formats,
+      '#default_value' => $this->getSetting('override_format'),
+      '#description' => t('Classes and labels can only be overridden with the "@null" option.  When any other text format is chosen, editors will have a text area for entering the custom override text, with any WYSIWYG editor that is configured for that format.  This is mostly useful when overriding fields whose input is also a text area.', ['@null' => $override_formats[NULL]]),
     ];
 
     return $elements;
