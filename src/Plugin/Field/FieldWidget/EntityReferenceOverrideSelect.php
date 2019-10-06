@@ -17,15 +17,13 @@ use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
  *   }
  * )
  */
-class EntityReferenceOverrideSelect extends OptionsWidgetBase
-{
+class EntityReferenceOverrideSelect extends OptionsWidgetBase {
   use OverrideTextWidgetTrait;
 
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state)
-  {
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $element += array(
       '#type' => 'select',
@@ -48,8 +46,7 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
   /**
    * {@inheritdoc}
    */
-  protected function sanitizeLabel(&$label)
-  {
+  protected function sanitizeLabel(&$label) {
     // Select form inputs allow unencoded HTML entities, but no HTML tags.
     $label = Html::decodeEntities(strip_tags($label));
   }
@@ -57,16 +54,14 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
   /**
    * {@inheritdoc}
    */
-  protected function supportsGroups()
-  {
+  protected function supportsGroups() {
     return TRUE;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEmptyLabel()
-  {
+  protected function getEmptyLabel() {
     // Single select: add a 'none' option for non-required fields,
     // and a 'select a value' option for required fields that do not come
     // with a value selected.
@@ -81,8 +76,7 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
   /**
    * {@inheritdoc}
    */
-  public static function validateElement(array $element, FormStateInterface $form_state)
-  {
+  public static function validateElement(array $element, FormStateInterface $form_state) {
     if ($element['#value'] == '_none') {
       if ($element['#required'] && $element['#value'] == '_none') {
         $form_state->setError($element, t('@name field is required.', array('@name' => $element['#title'])));
