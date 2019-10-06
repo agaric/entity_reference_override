@@ -19,6 +19,7 @@ use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
  */
 class EntityReferenceOverrideSelect extends OptionsWidgetBase
 {
+  use OverrideTextWidgetTrait;
 
   /**
    * {@inheritdoc}
@@ -38,20 +39,8 @@ class EntityReferenceOverrideSelect extends OptionsWidgetBase
     );
 
     $widget['target_id'] = $element;
-    $widget['override'] = array(
-      '#type' => 'textfield',
-      '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
-      '#maxlength' => 255,
-      '#size' => 40,
-      '#weight' => 10,
-    );
-
-    if ($this->fieldDefinition->getFieldStorageDefinition()->isMultiple()) {
-      $widget['override']['#placeholder'] = $this->fieldDefinition->getSetting('override_label');
-    }
-    else {
-      $widget['override']['#title'] = $this->fieldDefinition->getSetting('override_label');
-    }
+    // Add the override text field to our widget.
+    $this->overrideTextWidget($widget, $items, $delta);
 
     return $widget;
   }

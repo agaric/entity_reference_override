@@ -17,6 +17,7 @@ use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget
  * )
  */
 class EntityReferenceOverrideAutocomplete extends EntityReferenceAutocompleteWidget {
+  use OverrideTextWidgetTrait;
 
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $widget = array(
@@ -24,20 +25,8 @@ class EntityReferenceOverrideAutocomplete extends EntityReferenceAutocompleteWid
       '#theme_wrappers' => ['container'],
     );
     $widget['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
-    $widget['override'] = array(
-      '#type' => 'textfield',
-      '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
-      '#maxlength' => 4094,
-      '#size' => 40,
-      '#weight' => 10,
-    );
-
-    if ($this->fieldDefinition->getFieldStorageDefinition()->isMultiple()) {
-      $widget['override']['#placeholder'] = $this->fieldDefinition->getSetting('override_label');
-    }
-    else {
-      $widget['override']['#title'] = $this->fieldDefinition->getSetting('override_label');
-    }
+    // Add the override text field to our widget.
+    $this->overrideTextWidget($widget, $items, $delta);
 
     return $widget;
   }
