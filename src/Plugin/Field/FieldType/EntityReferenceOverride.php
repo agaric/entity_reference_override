@@ -3,6 +3,7 @@
 namespace Drupal\entity_reference_override\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
@@ -30,6 +31,10 @@ class EntityReferenceOverride extends EntityReferenceItem {
       ->setLabel($field_definition->getSetting('override_label'))
       ->setRequired(FALSE);
     $properties['override'] = $override_definition;
+    $override_format = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('override_format'))
+      ->setRequired(FALSE);
+    $properties['override_format'] = $override_format;
     return $properties;
   }
 
@@ -41,6 +46,11 @@ class EntityReferenceOverride extends EntityReferenceItem {
     $schema['columns']['override'] = array(
       'type' => 'varchar',
       'length' => 4094,
+      'not null' => FALSE,
+    );
+    $schema['columns']['override_format'] = array(
+      'type' => 'varchar',
+      'length' => 255,
       'not null' => FALSE,
     );
     return $schema;
