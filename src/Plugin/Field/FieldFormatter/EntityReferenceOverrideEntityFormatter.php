@@ -156,7 +156,11 @@ class EntityReferenceOverrideEntityFormatter extends EntityReferenceEntityFormat
             break;
 
           default:
-            $clone->set($override, $items[$delta]->override);
+            $field_override = $items[$delta]->override;
+            $clone->set($override, [
+              'value' => $field_override,
+              'format' => 'full_html',
+            ]);
             break;
         }
       }
