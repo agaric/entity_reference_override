@@ -1,0 +1,21 @@
+/**
+ * These fixes seem to be required, but i don't understand why.
+ */
+
+/* This seemingly-redundant tweak to this deeply nested field for the reference
+   widget is necessary to keep the whole thing from expanding too wide. */
+.field--type-entity-reference-override .ui-autocomplete-input {
+  width: 100%;
+}
+
+/* These are needed to keep the WYSIWYG editor from being too narrow! */
+
+/* We only want to target edit-[field-name]-[delta]-override elements but
+   can't easily, and this doesn't seem to hurt. */
+.field--type-entity-reference-override .form-item {
+  width: 100%;
+}
+
+.field--type-entity-reference-override .form-type--textarea.form-item--no-label {
+  width: 100%;
+}
