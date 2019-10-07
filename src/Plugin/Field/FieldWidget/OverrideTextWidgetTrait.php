@@ -8,6 +8,7 @@ trait OverrideTextWidgetTrait {
    * Provides a widget for the custom text field used by content editors.
    */
   public function overrideTextWidget(&$widget, $items, $delta) {
+    $widget['#attached']['library'][] = 'entity_reference_override/form-fixes';
     $widget['override'] = [
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
