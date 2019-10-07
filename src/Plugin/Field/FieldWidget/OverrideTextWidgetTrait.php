@@ -16,6 +16,14 @@ trait OverrideTextWidgetTrait {
       '#weight' => 10,
     ];
 
+    $format = $this->fieldDefinition->getSetting('override_format');
+    if ($format) {
+      $widget['override']['#type'] = 'text_format';
+      $widget['override']['#format'] = $format;
+      $widget['override']['#allowed_formats'] = [$format];
+      $widget['override']['#rows'] = 2;
+    }
+
     // This (using this) in a trait must be breaking some PHP OOP rule that i
     // haven't read yet...  but it works, and we know precisely the context
     // in which this trait is used.
