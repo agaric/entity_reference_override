@@ -1,0 +1,5 @@
+form-fixes:
+  version: 1.x
+  css:
+    component:
+      css/form-styles.css: {}
