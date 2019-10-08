@@ -53,16 +53,9 @@ function entity_reference_override_entity_usage_track_info_alter(&$info) {
  */
 function entity_reference_override_validate_custom_text($element, FormStateInterface &$form_state, $form) {
   $before = clone $form_state;
-  $value = [];
-  $entity_reference_override_field = $form['#parents'][0];
-  $field_values = $form_state->getValue($entity_reference_override_field);
-  foreach ($field_values as $delta => $field_value) {
-    if (is_numeric($delta) && is_array($field_value)) {
-      $value['target_id'] = $field_value['target_id'];
-      $value['override_value'] = $field_value['override']['value'];
-      $value['override_format'] = $field_value['override']['format'];
-      $form_state->setValueForElement($form, $value);
-    }
-  }
-  $after = $form_state;
+  $field_name = $element['#parents'][0];
+  $delta = $element['#parents'][1];
+  $field_values = $form_state->getValue($field_name);
+  $form_state->setValue([$field_name, $delta, 'override'], $field_values[$delta]['override']['value']);
+  $form_state->setValue([$field_name, $delta, 'override_format'], $field_values[$delta]['override']['format']);
 }
