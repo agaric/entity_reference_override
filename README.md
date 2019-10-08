@@ -20,6 +20,8 @@ New projects can be added to `drutopia_projects.txt` (the
 smart enough to only try to add new projects, but if you ignore the
 errors it should work).
 
+Optionally use `./get_all_repositories.sh extra` to also fetch Find It and Agaric projects for synching.
+
 ## Tagging
 
 To push a tag to GitLab, Github, and drupal.org use the script
