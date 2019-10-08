@@ -21,7 +21,9 @@ do
   cd ../..
 done < drutopia_infrastructure_projects.txt
 
-if $1
+extra=$1
+
+if $extra; then
 
 mkdir findit
 
