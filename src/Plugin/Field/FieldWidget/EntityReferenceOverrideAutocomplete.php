@@ -24,7 +24,8 @@ class EntityReferenceOverrideAutocomplete extends EntityReferenceAutocompleteWid
       '#attributes' => ['class' => ['form--inline', 'clearfix']],
       '#theme_wrappers' => ['container'],
     );
-    $widget['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
+    // Add target_id exactly as EntityReferenceAutocompleteWidget has it.
+    $widget += parent::formElement($items, $delta, $element, $form, $form_state);
     // Add the override text field to our widget.
     $this->overrideTextWidget($widget, $items, $delta);
 
