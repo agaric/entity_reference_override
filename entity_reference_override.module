@@ -52,7 +52,6 @@ function entity_reference_override_entity_usage_track_info_alter(&$info) {
  * Use validation to clean up
  */
 function entity_reference_override_validate_custom_text($element, FormStateInterface &$form_state, $form) {
-  $before = clone $form_state;
   $field_name = $element['#parents'][0];
   $delta = $element['#parents'][1];
   $field_values = $form_state->getValue($field_name);
