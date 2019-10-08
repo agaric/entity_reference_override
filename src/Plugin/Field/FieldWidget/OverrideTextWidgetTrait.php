@@ -9,6 +9,7 @@ trait OverrideTextWidgetTrait {
    */
   public function overrideTextWidget(&$widget, $items, $delta) {
     $widget['#attached']['library'][] = 'entity_reference_override/form-fixes';
+    $widget['#element_validate'][] = 'entity_reference_override_validate_custom_text';
     $widget['override'] = [
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]) ? $items[$delta]->override : '',
