@@ -13,12 +13,12 @@ for i in drutopia-infrastructure/*/.git; do ( echo $i; cd $i/..; git push drupal
 
 for i in drutopia-infrastructure/*/.git; do ( echo $i; cd $i/..; git push github master; git push github --tags; ); done
 
-if $1; then
-  for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git pull; ); done
-  for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git push drupal master; git push drupal --tags; ); done
-  for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git push github master; git push github --tags; ); done
 
-  for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git pull; ); done
-  for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git push drupal master; git push drupal --tags; ); done
-  for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git push github master; git push github --tags; ); done
-fi
+for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git pull; ); done
+for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git push drupal master; git push drupal --tags; ); done
+for i in find-it-program-locator/*/.git; do ( echo $i; cd $i/..; git push github master; git push github --tags; ); done
+
+
+for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git pull; ); done
+for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git push drupal master; git push drupal --tags; ); done
+for i in agaric/drupal/*/.git; do ( echo $i; cd $i/..; git push github master; git push github --tags; ); done
