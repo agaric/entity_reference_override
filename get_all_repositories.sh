@@ -32,7 +32,7 @@ do
   git remote add drupal git@git.drupal.org:project/$project.git
   git remote add github git@github.com:drutopia/$project.git
   cd ../
-done < findit_projects.txt
+done < ../findit_projects.txt
 
 cd ../
 
@@ -47,6 +47,6 @@ do
   git remote add drupal git@git.drupal.org:project/$project.git
   git remote add github git@github.com:agaric/$project.git
   cd ../
-done < agaric_projects.txt
+done < ../../agaric_projects.txt
 
 cd ../../
