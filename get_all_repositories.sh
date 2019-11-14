@@ -21,32 +21,32 @@ do
   cd ../..
 done < drutopia_infrastructure_projects.txt
 
-extra=$1
-
-if $extra; then
 
 mkdir findit
+cd findit
 
 while read project
 do
-  cd findit
   git clone git@gitlab.com:find-it-program-locator/$project.git
   cd $project
   git remote add drupal git@git.drupal.org:project/$project.git
   git remote add github git@github.com:drutopia/$project.git
-  cd ../..
+  cd ../
 done < findit_projects.txt
 
+cd ../
+
+
 mkdir -p agaric/drupal
+cd agaric/drupal
 
 while read project
 do
-  cd agaric/drupal
   git clone git@gitlab.com:agaric/drupal/$project.git
   cd $project
   git remote add drupal git@git.drupal.org:project/$project.git
   git remote add github git@github.com:agaric/$project.git
-  cd ../../..
+  cd ../
 done < agaric_projects.txt
 
-fi
+cd ../../
